@@ -137,7 +137,10 @@ export default function About() {
             <h2 className="text-3xl font-bold mb-4">Our Journey</h2>
           </div>
 
-          <div className="space-y-12">
+          <div className="relative space-y-0">
+            {/* Vertical Line */}
+            <div className="absolute left-[15px] md:left-1/2 top-2 bottom-2 w-[2px] bg-slate-200 md:-translate-x-1/2" />
+
             {[
               { year: "2020", title: "Company Founded", desc: "ElevateTech was established with a core team of 5 engineers in a small office." },
               { year: "2021", title: "Seed Funding & Growth", desc: "Secured $3.2M in seed funding. Launched our proprietary Cloud migration framework." },
@@ -145,27 +148,33 @@ export default function About() {
               { year: "2023", title: "Series A & AI Launch", desc: "Raised $15M Series A. Launched our specialized Enterprise AI automation division." },
               { year: "2024", title: "Industry Recognition", desc: "Named 'Top B2B Tech Innovator'. Team grew to over 150 global experts." }
             ].map((item, i) => (
-              <div key={item.year} className="relative pl-8 md:pl-0">
-                <div className="md:grid md:grid-cols-5 md:gap-8 items-center">
-                  <div className="hidden md:block md:col-span-1 text-right">
-                    <span className="text-2xl font-bold text-primary">{item.year}</span>
+              <motion.div 
+                key={item.year} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="relative pl-12 md:pl-0"
+              >
+                <div className="md:grid md:grid-cols-2 md:gap-24 items-start py-8">
+                  {/* Year (Left on Desktop) */}
+                  <div className={`hidden md:flex items-center ${i % 2 === 0 ? 'justify-end text-right' : 'order-last justify-start text-left'}`}>
+                    <span className="text-3xl font-bold text-primary/40 group-hover:text-primary transition-colors">{item.year}</span>
                   </div>
                   
-                  {/* Node */}
-                  <div className="absolute left-0 md:left-auto md:col-span-1 flex justify-center w-8 md:w-full top-1 md:top-auto">
-                    <div className="w-4 h-4 rounded-full bg-primary ring-4 ring-primary/20 z-10" />
-                    {i !== 4 && (
-                      <div className="absolute top-4 left-1.5 md:left-1/2 w-1 h-32 md:h-24 bg-border -translate-x-1/2" />
-                    )}
+                  {/* Center Node */}
+                  <div className="absolute left-0 md:left-1/2 flex justify-center w-8 md:w-0 top-1/2 md:-translate-x-1/2 -translate-y-1/2 z-10">
+                    <div className="w-4 h-4 rounded-full bg-primary ring-4 ring-primary/10 shadow-[0_0_15px_rgba(99,102,241,0.5)]" />
                   </div>
 
-                  <div className="md:col-span-3">
-                    <div className="md:hidden text-primary font-bold text-xl mb-1">{item.year}</div>
-                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground">{item.desc}</p>
+                  {/* Content (Right/Left on Desktop) */}
+                  <div className={`${i % 2 === 0 ? '' : 'md:text-right'}`}>
+                    <div className="md:hidden text-primary/60 font-bold text-lg mb-1">{item.year}</div>
+                    <h3 className="text-xl font-bold mb-2 text-slate-900">{item.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
